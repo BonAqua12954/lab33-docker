@@ -1,0 +1,32 @@
+services:
+  app:
+    image: qq56565/lab33-app:1.0.0
+    build: .
+    container_name: lab33-app
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+    networks:
+      - lab-net
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: lab33-redis
+    volumes:
+      - redis-data:/data
+    networks:
+      - lab-net
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+
+networks:
+  lab-net:
+    driver: bridge
